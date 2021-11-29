@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -46,7 +47,7 @@ const Navbar = (props) => {
                 </Link>
               </li>
 
-              {!!props.user.accessToken ? (
+              {!!props.user ? (
                 <>
                   <li className="nav-item">
                     <Link className="nav-link" to="/earn">

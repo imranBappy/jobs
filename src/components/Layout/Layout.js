@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import _Dashboard from "../../pages/dashboard";
+import _Earn from "../../pages/earn";
 import Home from "../../pages/home";
 import _Login from "../../pages/login";
 import _Register from "../../pages/register";
@@ -22,7 +23,7 @@ const Layout = (props) => {
   );
 };
 
-export { PrivateRoute, Home, _Login, _Register, _Reset, _Dashboard };
+export { PrivateRoute, Home, _Login, _Register, _Reset, _Earn, _Dashboard };
 const matStateToProps = (state) => ({
   alert: state.alert,
 });

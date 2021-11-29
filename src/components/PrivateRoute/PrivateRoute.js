@@ -7,7 +7,7 @@ const PrivateRoute = ({ children, user, ...rest }) => {
       <Route
         {...rest}
         render={({ location }) =>
-          !!user.accessToken ? (
+          !!user ? (
             children
           ) : (
             <Redirect
@@ -23,8 +23,10 @@ const PrivateRoute = ({ children, user, ...rest }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
 
 export default connect(mapStateToProps)(PrivateRoute);

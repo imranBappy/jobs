@@ -1,10 +1,6 @@
 import * as Types from "../types";
 
-const init = {
-  user: {},
-};
-
-const authReducer = (state = init, action) => {
+const authReducer = (state = null, action) => {
   switch (action.type) {
     case Types.SET_USER:
       return action.payload.user;

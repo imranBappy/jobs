@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -16,9 +15,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import jwt_decode from "jwt-decode";
 import "../firebase";
 import * as Types from "../types";
-
 export const registerAction = (user, history) => async (dispatch) => {
   const auth = getAuth();
   const { email, password, name } = user;
@@ -42,6 +41,7 @@ export const registerAction = (user, history) => async (dispatch) => {
         error: false,
       },
     });
+    localStorage.setItem("token", currentUser.accessToken);
     dispatch({
       type: Types.SET_USER,
       payload: {
@@ -63,10 +63,11 @@ export const loginAction = (user, history) => async (dispatch) => {
     const auth = getAuth();
     await signInWithEmailAndPassword(auth, email, password);
     const currentUser = auth.currentUser;
+    localStorage.setItem("token", currentUser.accessToken);
     dispatch({
       type: Types.SET_USER,
       payload: {
-        user: currentUser,
+        user: { ...currentUser },
       },
     });
     dispatch({
@@ -76,6 +77,7 @@ export const loginAction = (user, history) => async (dispatch) => {
         error: false,
       },
     });
+    await getAuthAction();
     history.push("/dashboard");
   } catch (error) {
     dispatch({
@@ -107,11 +109,15 @@ export const resetAction = (email) => async (dispatch) => {
 
 export const logoutAction = () => async (dispatch) => {
   const auth = getAuth();
+  const token = localStorage.getItem("token");
   await signOut(auth);
+  if (token) {
+    localStorage.removeItem("token");
+  }
   dispatch({
     type: Types.SET_USER,
     payload: {
-      user: {},
+      user: null,
     },
   });
   dispatch({
@@ -122,71 +128,80 @@ export const logoutAction = () => async (dispatch) => {
     },
   });
 };
-export const changePassAction = (pass) => async (dispatch) => {
+// export const changePassAction = (pass) => async (dispatch) => {
+//   try {
+//     const result = await axios.put("/user/login", pass);
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       localStorage.removeItem("token");
+//     }
+
+//     dispatch({
+//       type: Types.SET_USER,
+//       payload: {
+//         auth: false,
+//         user: null,
+//         token: "",
+//       },
+//     });
+//     dispatch({
+//       type: Types.SET_ALERT,
+//       payload: {
+//         message: result.data.message,
+//         error: false,
+//       },
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: Types.SET_ALERT,
+//       payload: {
+//         message: "Server Error",
+//         error: false,
+//       },
+//     });
+//   }
+// };
+export const getAuthAction = () => async (dispatch) => {
+  const token = localStorage.getItem("token");
+
   try {
-    const result = await axios.put("/user/login", pass);
-    const token = localStorage.getItem("token");
     if (token) {
-      localStorage.removeItem("token");
-    }
-
-    dispatch({
-      type: Types.SET_USER,
-      payload: {
-        auth: false,
-        user: {},
-        token: "",
-      },
-    });
-    dispatch({
-      type: Types.SET_ALERT,
-      payload: {
-        message: result.data.message,
-        error: false,
-      },
-    });
-  } catch (error) {
-    dispatch({
-      type: Types.SET_ALERT,
-      payload: {
-        message: "Server Error",
-        error: false,
-      },
-    });
-  }
-};
-export const getAuthAction = (req, res) => async (dispatch) => {
-  const auth = getAuth();
-  try {
-    const db = getFirestore();
-    const citiesRef = collection(db, "users");
-
-    const getUsers = async (newUser) => {
-      // console.log(111, newUser.uid);
-      // where("uid", "==", newUser.uid)
-      const stateQuery = query(citiesRef, where("uid", "==", newUser.uid));
-      try {
-        const querySnapshot = await getDocs(stateQuery);
-        querySnapshot.forEach((doc) => {
-          // console.log({ ...doc.data() });
-          dispatch({
-            type: Types.SET_USER,
-            payload: {
-              user: { ...doc.data(), ...newUser },
-            },
+      var decoded = jwt_decode(token);
+      const auth = getAuth();
+      const db = getFirestore();
+      const citiesRef = collection(db, "users");
+      const getUsers = async (newUser) => {
+        const uid = newUser.uid || "";
+        const stateQuery = query(citiesRef, where("uid", "==", uid));
+        try {
+          const querySnapshot = await getDocs(stateQuery);
+          querySnapshot.forEach((doc) => {
+            dispatch({
+              type: Types.SET_USER,
+              payload: {
+                user: { ...doc.data(), ...decoded },
+              },
+            });
           });
-        });
-      } catch (error) {
-        console.dir({ error });
-        dispatch({
-          type: Types.SET_ALERT,
-          payload: { message: error.message, error: true },
-        });
-      }
-    };
-    onAuthStateChanged(auth, async (user) => {
-      await getUsers(user);
-    });
+        } catch (error) {
+          console.log({ error });
+          dispatch({
+            type: Types.SET_ALERT,
+            payload: { message: error.message, error: true },
+          });
+        }
+      };
+      onAuthStateChanged(auth, async (user) => {
+        await getUsers({ ...user });
+      });
+    } else {
+      dispatch({
+        type: Types.SET_USER,
+        payload: {
+          user: null,
+        },
+      });
+    }
   } catch (error) {
     dispatch({
       type: Types.SET_ALERT,
