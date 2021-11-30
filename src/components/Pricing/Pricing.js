@@ -1,6 +1,11 @@
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import mlmPkg from "../../img/mlm-pkg.jpg";
+import { basicSubscribAction } from "../../redux/actions/tranxAction";
 import styles from "../../styles/Home.module.css";
-const Pricing = () => {
+const Pricing = (props) => {
+  const { user } = props;
+
   return (
     <div id="pricing">
       <div className="card-group">
@@ -20,15 +25,25 @@ const Pricing = () => {
             </ul>
 
             <div className="d-grid">
-              <button className="btn btn-primary" type="button">
-                SUBSCRIBE
+              <button
+                className={`btn btn-${
+                  user.package === "basic" ? "secondary" : "primary"
+                }`}
+                type="button"
+                onClick={
+                  user.package === "basic"
+                    ? () => {}
+                    : () => props.basicSubscribAction(user)
+                }
+              >
+                {user.package === "basic" ? "SUBSCRIBED" : "SUBSCRIBE"}
               </button>
             </div>
           </div>
         </div>
 
         <div className={`card mx-5 ${styles.card__wrap}`}>
-          <img src={mlmPkg} className="card-img-top" alt="..." />
+          <img src={mlmPkg} className="card-img-top" alt="card" />
           <div className="card-body">
             <h4 className="card-title">Standard</h4>
             <p className="card-text">
@@ -44,9 +59,13 @@ const Pricing = () => {
             </ul>
 
             <div className="d-grid">
-              <button className="btn btn-primary" type="button">
+              <Link
+                className="btn btn-primary"
+                type="button"
+                to={`/pricing?p=standard`}
+              >
                 SUBSCRIBE
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -68,9 +87,13 @@ const Pricing = () => {
             </ul>
 
             <div className="d-grid">
-              <button className="btn btn-primary" type="button">
+              <Link
+                className="btn btn-primary"
+                type="button"
+                to={`/pricing?p=premium`}
+              >
                 SUBSCRIBE
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -78,5 +101,8 @@ const Pricing = () => {
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  user: { ...state.user },
+});
 
-export default Pricing;
+export default connect(mapStateToProps, { basicSubscribAction })(Pricing);

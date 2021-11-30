@@ -1,0 +1,16 @@
+.videos__container {
+  margin: 0 auto;
+  max-width: 700px;
+}
+.video__wrap {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+.video__wrap > video {
+  width: 100%;
+  height: auto;
+}
+.video__wrap > h2 {
+  font-family: "Roboto Slab", serif;
+}

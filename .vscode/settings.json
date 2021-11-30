@@ -10,5 +10,6 @@
   "typescript.validate.enable": false,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
-  }
+  },
+  "cSpell.words": ["tranx", "imran", "bappy"]
 }

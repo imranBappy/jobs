@@ -1,3 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Icons+Outlined");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
+#status span.status {
+  display: none;
+  font-weight: bold;
+}
+span.status.complete {
+  color: green;
+}
+span.status.incomplete {
+  color: red;
+}
+#status.complete span.status.complete {
+  display: inline;
+}
+#status.incomplete span.status.incomplete {
+  display: inline;
+}

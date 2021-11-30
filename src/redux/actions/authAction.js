@@ -179,7 +179,7 @@ export const getAuthAction = () => async (dispatch) => {
             dispatch({
               type: Types.SET_USER,
               payload: {
-                user: { ...doc.data(), ...decoded },
+                user: { ...doc.data(), ...decoded, id: doc.id },
               },
             });
           });
