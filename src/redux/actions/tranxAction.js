@@ -1,20 +1,30 @@
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { SET_ALERT, SET_USER } from "../types";
 
 export const tranxPostAction = (tranx) => async (dispatch) => {
   const db = getFirestore();
   try {
-    // const docRef = await addDoc(collection(db, "deposit"), tranx);
-    // Create an initial document to update.
-    const washingtonRef = doc(db, "deposit", "pC6wAF548YaQECJHmhJQ");
-
-    const result = await updateDoc(washingtonRef, {
-      package: "standard",
+    // Timestamp.fromDate(new Date("December 10, 1815")),
+    await addDoc(collection(db, "deposit"), {
+      ...tranx,
+      createdAt: Timestamp.fromDate(new Date("December 10, 1815")),
     });
-    console.log(result);
-    // console.log(docRef);
+    dispatch({
+      type: SET_ALERT,
+      payload: { message: "Successfully Send!", error: false },
+    });
   } catch (error) {
-    console.dir({ error });
+    dispatch({
+      type: SET_ALERT,
+      payload: { message: error.message, error: true },
+    });
   }
 };
 export const basicSubscribAction = (user) => async (dispatch) => {
@@ -41,6 +51,12 @@ export const basicSubscribAction = (user) => async (dispatch) => {
       },
     });
   } catch (error) {
-    console.dir({ error });
+    dispatch({
+      type: SET_ALERT,
+      payload: {
+        message: error.message,
+        error: true,
+      },
+    });
   }
 };

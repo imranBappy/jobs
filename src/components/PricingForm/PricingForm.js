@@ -17,12 +17,6 @@ function PricingForm(props) {
       package: query.get("p"),
     });
   };
-  // Name:
-  // Email:
-  // Package :basice
-  // Number:
-  // textId:
-  // status: true
 
   return (
     <>
@@ -51,8 +45,8 @@ function PricingForm(props) {
           <input
             required
             onChange={(e) => setTaka({ ...taka, trnxId: e.target.value })}
-            name="password"
-            type="password"
+            name="trnxId"
+            type="text"
             className="form-control"
             placeholder="Trnx Id"
             aria-label="Trnx Id"

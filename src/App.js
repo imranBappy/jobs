@@ -13,6 +13,7 @@ import Layout, {
   _Register,
   _Reset,
 } from "./components/Layout/Layout";
+import WithdrawInput from "./components/Withdraw/WithdrawInput";
 import "./styles/App.css";
 const App = () => {
   return (
@@ -27,7 +28,9 @@ const App = () => {
         <PrivateRoute path="/dashboard">
           <_Dashboard />
         </PrivateRoute>
-
+        <PrivateRoute path="/withdraw">
+          <WithdrawInput />
+        </PrivateRoute>
         <PrivateRoute path="/earn">
           <IsPremium path="/earn">
             <_Earn />

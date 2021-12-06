@@ -163,45 +163,42 @@ export const logoutAction = () => async (dispatch) => {
 // };
 export const getAuthAction = () => async (dispatch) => {
   const token = localStorage.getItem("token");
-
   try {
-    if (token) {
-      var decoded = jwt_decode(token);
-      const auth = getAuth();
-      const db = getFirestore();
-      const citiesRef = collection(db, "users");
-      const getUsers = async (newUser) => {
-        const uid = newUser.uid || "";
-        const stateQuery = query(citiesRef, where("uid", "==", uid));
-        try {
-          const querySnapshot = await getDocs(stateQuery);
-          querySnapshot.forEach((doc) => {
-            dispatch({
-              type: Types.SET_USER,
-              payload: {
-                user: { ...doc.data(), ...decoded, id: doc.id },
-              },
-            });
-          });
-        } catch (error) {
-          console.log({ error });
-          dispatch({
-            type: Types.SET_ALERT,
-            payload: { message: error.message, error: true },
-          });
-        }
-      };
-      onAuthStateChanged(auth, async (user) => {
-        await getUsers({ ...user });
-      });
-    } else {
-      dispatch({
+    if (!token) {
+      return dispatch({
         type: Types.SET_USER,
         payload: {
           user: null,
         },
       });
     }
+    var decoded = jwt_decode(token);
+    dispatch({
+      type: Types.SET_USER,
+      payload: {
+        user: { ...decoded },
+      },
+    });
+
+    const auth = getAuth();
+    const db = getFirestore();
+    const citiesRef = collection(db, "users");
+    const getUsers = async (newUser) => {
+      const uid = newUser.uid || "";
+      const stateQuery = query(citiesRef, where("uid", "==", uid));
+      const querySnapshot = await getDocs(stateQuery);
+      querySnapshot.forEach((doc) => {
+        dispatch({
+          type: Types.SET_USER,
+          payload: {
+            user: { ...doc.data(), ...decoded, id: doc.id },
+          },
+        });
+      });
+    };
+    onAuthStateChanged(auth, async (user) => {
+      await getUsers({ ...user });
+    });
   } catch (error) {
     dispatch({
       type: Types.SET_ALERT,

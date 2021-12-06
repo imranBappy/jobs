@@ -7,13 +7,12 @@
 }
 span.status.complete {
   color: green;
+  display: inline !important;
 }
 span.status.incomplete {
   color: red;
 }
-#status.complete span.status.complete {
-  display: inline;
-}
+
 #status.incomplete span.status.incomplete {
   display: inline;
 }

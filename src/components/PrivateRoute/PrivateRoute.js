@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
+import { getAuthAction } from "../../redux/actions/authAction";
 const PrivateRoute = ({ children, user, ...rest }) => {
   return (
     <>
@@ -29,4 +31,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps, { getAuthAction })(PrivateRoute);
