@@ -1,0 +1,30 @@
+.input__file {
+  flex-basis: 500px;
+  background-color: rgb(189 189 189);
+  border: 1px dotted black;
+}
+
+.input__file > input {
+  visibility: hidden;
+}
+.input__file_label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+.input__file > label > span {
+  font-size: 100px;
+}
+.input__file > h5 {
+  text-align: center;
+  padding: 10px 0px;
+}
+.thumbnail__img {
+  width: 100%;
+}
+.input__video {
+  width: 100%;
+}
