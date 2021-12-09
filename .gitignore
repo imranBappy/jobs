@@ -66,3 +66,9 @@ server/.env.local
 server/npm-debug.log*
 server/yarn-debug.log*
 server/yarn-error.log*
+
+# Object file
+*.o
+
+# Ada Library Information
+*.ali
