@@ -40,7 +40,7 @@ const Sidevar = (props) => {
     { path: "/news", name: "News" },
     { path: "/deposit", name: "Deposit" },
     { path: "/withdraw", name: "Withdraw" },
-    { path: "/option", name: "Option" },
+    // { path: "/option", name: "Option" },
     { path: "/admin", name: "Admin" },
   ];
   const handleLogout = () => {

@@ -38,13 +38,6 @@ export const clubAction = (news) => async (dispatch) => {
     };
     const img = await filePost(news.img);
     postVideo({ ...news, img: img });
-    //   dispatch({
-    //     type: Types.SET_ALERT,
-    //     payload:{
-    //         message: res.data.message,
-    //         error: res.data.error
-    //     }
-    //  })
   } catch (error) {
     dispatch({
       type: Types.SET_ALERT,

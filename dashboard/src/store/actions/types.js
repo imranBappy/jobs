@@ -8,3 +8,4 @@ export const SET_ADMIN = "SET_ADMIN";
 export const SET_DEPOSIT = "SET_DEPOSIT";
 export const SET_USER_BET = "SET_USER_BET";
 export const SET_WITHDRAW = "SET_WITHDRAW";
+export const SET_NEWS = "SET_NEWS";

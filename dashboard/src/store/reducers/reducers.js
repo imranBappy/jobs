@@ -3,8 +3,8 @@ import { adminReducer } from "./adminReducer";
 import { alertReducer } from "./alertReducer";
 import authReducer from "./authReducer";
 import betReducer from "./betReducer";
-import clubReducer from "./clubReducer";
 import depositReducer from "./depositReducer";
+import newsReducer from "./newsReducer";
 import userBetReducer from "./userBetReducer";
 import userReducer from "./userReducer";
 import videosReducer from "./videosReducer";
@@ -16,7 +16,7 @@ const reducers = combineReducers({
   videos: videosReducer,
   user: userReducer,
   bet: betReducer,
-  club: clubReducer,
+  news: newsReducer,
   admin: adminReducer,
   deposit: depositReducer,
   userBet: userBetReducer,
